@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ -z "$HOME" ]
+    then
+        echo \$HOME is not set.
+        exit 1
+fi
+
+while [ "$1" ]
+do
+    INST_LOC=$(cat $HOME/etc/cq/instances | grep $1 | cut -d$'\t' -f 2)
+    touch $INST_LOC/crx-quickstart/repository/tarJournal/optimize.tar
+	shift
+done

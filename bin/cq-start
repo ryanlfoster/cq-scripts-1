@@ -1,0 +1,16 @@
+#!/bin/bash
+if [ -z "$HOME" ]
+    then
+        echo \$HOME is not set.
+        exit 1
+fi
+
+[ -d $HOME/etc/cq/pid ] || mkdir -p $HOME/etc/cq/pid
+
+while [ "$1" ]
+do
+	cd $(cat $HOME/etc/cq/instances | grep $1 | cut -d$'\t' -f 2)
+	java -jar -Xmx1536M -XX:MaxPermSize=256M -Djava.awt.headless=true $(find . -type f -name "*.jar" -maxdepth 1) 2>&1 1>/dev/null &
+    echo $! > $HOME/etc/cq/pid/$1.pid
+	shift
+done

@@ -1,0 +1,15 @@
+#!/bin/bash
+if [ -z "$HOME" ]
+    then
+        echo \$HOME is not set.
+        exit 1
+fi
+
+PS_CMD="ps -p $(cat $HOME/etc/cq/pid/$1.pid | head -n 1)"
+  
+if [ $($PS_CMD | tail -n `expr $($PS_CMD | wc -l) - 1` | wc -l) -gt 0 ]
+then
+    exit 0
+else
+    exit 1
+fi
